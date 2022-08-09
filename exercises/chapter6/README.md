@@ -165,7 +165,6 @@ threeAreEqual :: forall a. Eq a => a -> a -> a -> Boolean
 threeAreEqual a1 a2 a3 = a1 == a2 && a2 == a3
 ```
 ## Instance Dependencies
----
 
 ## Multi Parameter Type Classes
 

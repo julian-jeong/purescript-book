@@ -26,16 +26,15 @@ A convenient way to work with asynchronous code in JavaScript is with [`async` a
 Here is an example of using this technique to copy the contents of one file to another file:
 
 ```js
-import { promises as fsPromises } from 'fs'
+import { promises as fsPromises } from "fs";
 
 async function copyFile(file1, file2) {
-  let data = await fsPromises.readFile(file1, { encoding: 'utf-8' });
-  fsPromises.writeFile(file2, data, { encoding: 'utf-8' });
+  let data = await fsPromises.readFile(file1, { encoding: "utf-8" });
+  fsPromises.writeFile(file2, data, { encoding: "utf-8" });
 }
 
-copyFile('file1.txt', 'file2.txt')
-.catch(e => {
-  console.log('There was a problem with copyFile: ' + e.message);
+copyFile("file1.txt", "file2.txt").catch((e) => {
+  console.log("There was a problem with copyFile: " + e.message);
 });
 ```
 
@@ -57,40 +56,47 @@ It is also possible to re-write the above snippet using callbacks or synchronous
 The syntax for working with `Aff` is very similar to working with `Effect`. They are both monads, and can therefore be written with do notation.
 
 For example, if we look at the signature of `readTextFile`, we see that it returns the file contents as a `String` wrapped in `Aff`:
+
 ```hs
 readTextFile :: Encoding -> FilePath -> Aff String
 ```
+
 We can "unwrap" the returned string with a bind arrow (`<-`) in do notation:
+
 ```hs
 my_data <- readTextFile UTF8 file1
 ```
+
 Then pass it as the string argument to `writeTextFile`:
+
 ```hs
 writeTextFile :: Encoding -> FilePath -> String -> Aff Unit
 ```
 
 The only other notable feature unique to `Aff` in the above example is `attempt`, which captures errors or exceptions encountered while running `Aff` code and stores them in an `Either`:
+
 ```hs
 attempt :: forall a. Aff a -> Aff (Either Error a)
 ```
 
 You should hopefully be able to draw on your knowledge of concepts from previous chapters and combine this with the new `Aff` patterns learned in the above `copyFile` example to tackle the following exercises:
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Write a `concatenateFiles` function which concatenates two text files.
+1.  (Easy) Write a `concatenateFiles` function which concatenates two text files.
 
- 1. (Medium) Write a function `concatenateMany` to concatenate multiple text files, given an array of input file names and an output file name. _Hint_: use `traverse`.
+1.  (Medium) Write a function `concatenateMany` to concatenate multiple text files, given an array of input file names and an output file name. _Hint_: use `traverse`.
 
- 1. (Medium) Write a function `countCharacters :: FilePath -> Aff (Either Error Int)` that returns the number of characters in a file, or an error if one is encountered.
+1.  (Medium) Write a function `countCharacters :: FilePath -> Aff (Either Error Int)` that returns the number of characters in a file, or an error if one is encountered.
 
 ## Additional Aff Resources
 
 If you haven't already taken a look at the [official Aff guide](https://pursuit.purescript.org/packages/purescript-aff/), skim through that now. It's not a direct prerequisite for completing the remaining exercises in this chapter, but you may find it helpful to lookup some functions on Pursuit.
 
 You're also welcome to consult these supplemental resources too, but again, the exercises in this chapter don't depend on them:
-* [Drew's Aff Post](https://blog.drewolson.org/asynchronous-purescript)
-* [Additional Aff Explanation and Examples](https://github.com/JordanMartinez/purescript-jordans-reference/tree/latestRelease/21-Hello-World/02-Effect-and-Aff/src/03-Aff)
+
+- [Drew's Aff Post](https://blog.drewolson.org/asynchronous-purescript)
+- [Additional Aff Explanation and Examples](https://github.com/JordanMartinez/purescript-jordans-reference/tree/latestRelease/21-Hello-World/02-Effect-and-Aff/src/03-Aff)
 
 ## A HTTP Client
 
@@ -188,17 +194,19 @@ unit
 
 A full listing of available parallel functions can be found in the [`parallel` docs on Pursuit](https://pursuit.purescript.org/packages/purescript-parallel/docs/Control.Parallel). The [aff docs section on parallel](https://github.com/purescript-contrib/purescript-aff#parallel-execution) also contains more examples.
 
- ## Exercises
+## Exercises
 
 1. (Easy) Write a `concatenateManyParallel` function which has the same signature as the earlier `concatenateMany` function, but reads all input files in parallel.
 
 1. (Medium) Write a `getWithTimeout :: Number -> String -> Aff (Maybe String)` function which makes an HTTP `GET` request at the provided URL and returns either:
-    - `Nothing`: if the request takes longer than the provided timeout (in milliseconds).
-    - The string response: if the request succeeds before the timeout elapses.
+
+   - `Nothing`: if the request takes longer than the provided timeout (in milliseconds).
+   - The string response: if the request succeeds before the timeout elapses.
 
 1. (Difficult) Write a `recurseFiles` function which takes a "root" file and returns an array of all paths listed in that file (and listed in the listed files too). Read listed files in parallel. Paths are relative to the directory of the file they appear in. _Hint:_ The `node-path` module has some helpful functions for negotiating directories.
 
 For example, if starting from the following `root.txt` file:
+
 ```shell
 $ cat root.txt
 a.txt
@@ -217,7 +225,9 @@ $ cat b/a.txt
 
 $ cat c/a/a.txt
 ```
+
 The expected output is:
+
 ```hs
 ["root.txt","a.txt","b/a.txt","b/b.txt","b/c/a.txt","c/a/a.txt"]
 ```
@@ -225,6 +235,7 @@ The expected output is:
 ## Conclusion
 
 In this chapter we covered asynchronous effects and learned how to:
+
 - Run asynchronous code in the `Aff` monad with the `aff` library.
 - Make HTTP requests asynchronously with the `affjax` library.
 - Run asynchronous code in parallel with the `parallel` library.
