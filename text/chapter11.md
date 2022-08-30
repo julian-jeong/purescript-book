@@ -39,8 +39,9 @@ For example, to provide the player name using the `-p` option:
 $ spago run -a "-p Phil"
 >
 ```
+
 ```text
-$ spago bundle-app 
+$ spago bundle-app
 $ node index.js -p Phil
 >
 ```
@@ -136,36 +137,36 @@ Given the `sumArray` function above, we could use `execState` in PSCi to sum the
 21
 ```
 
- ## Exercises
+## Exercises
 
- 1. (Easy) What is the result of replacing `execState` with `runState` or `evalState` in our example above?
- 1. (Medium) A string of parentheses is _balanced_ if it is obtained by either concatenating zero-or-more shorter balanced
-     strings, or by wrapping a shorter balanced string in a pair of parentheses.
+1.  (Easy) What is the result of replacing `execState` with `runState` or `evalState` in our example above?
+1.  (Medium) A string of parentheses is _balanced_ if it is obtained by either concatenating zero-or-more shorter balanced
+    strings, or by wrapping a shorter balanced string in a pair of parentheses.
 
-     Use the `State` monad and the `traverse_` function to write a function
+    Use the `State` monad and the `traverse_` function to write a function
 
-     ```haskell
-     testParens :: String -> Boolean
-     ```
+    ```haskell
+    testParens :: String -> Boolean
+    ```
 
-     which tests whether or not a `String` of parentheses is balanced, by keeping track of the number of opening parentheses
-     which have not been closed. Your function should work as follows:
+    which tests whether or not a `String` of parentheses is balanced, by keeping track of the number of opening parentheses
+    which have not been closed. Your function should work as follows:
 
-     ```text
-     > testParens ""
-     true
+    ```text
+    > testParens ""
+    true
 
-     > testParens "(()(())())"
-     true
+    > testParens "(()(())())"
+    true
 
-     > testParens ")"
-     false
+    > testParens ")"
+    false
 
-     > testParens "(()()"
-     false
-     ```
+    > testParens "(()()"
+    false
+    ```
 
-     _Hint_: you may like to use the `toCharArray` function from the `Data.String.CodeUnits` module to turn the input string into an array of characters.
+    _Hint_: you may like to use the `toCharArray` function from the `Data.String.CodeUnits` module to turn the input string into an array of characters.
 
 ## The Reader Monad
 
@@ -220,9 +221,9 @@ To run a computation in the `Reader` monad, the `runReader` function can be used
 runReader :: forall r a. Reader r a -> r -> a
 ```
 
- ## Exercises
+## Exercises
 
- In these exercises, we will use the `Reader` monad to build a small library for rendering documents with indentation. The "global configuration" will be a number indicating the current indentation level:
+In these exercises, we will use the `Reader` monad to build a small library for rendering documents with indentation. The "global configuration" will be a number indicating the current indentation level:
 
 ```haskell
 type Level = Int
@@ -230,47 +231,50 @@ type Level = Int
 type Doc = Reader Level String
 ```
 
- 1. (Easy) Write a function `line` which renders a function at the current indentation level. Your function should have the following type:
+1.  (Easy) Write a function `line` which renders a function at the current indentation level. Your function should have the following type:
 
-     ```haskell
-     line :: String -> Doc
-     ```
+    ```haskell
+    line :: String -> Doc
+    ```
 
-     _Hint_: use the `ask` function to read the current indentation level. The `power` function from `Data.Monoid` may be helpful too.
- 1. (Easy) Use the `local` function to write a function
+    _Hint_: use the `ask` function to read the current indentation level. The `power` function from `Data.Monoid` may be helpful too.
 
-     ```haskell
-     indent :: Doc -> Doc
-     ```
+1.  (Easy) Use the `local` function to write a function
 
-     which increases the indentation level for a block of code.
- 1. (Medium) Use the `sequence` function defined in `Data.Traversable` to write a function
+    ```haskell
+    indent :: Doc -> Doc
+    ```
 
-     ```haskell
-     cat :: Array Doc -> Doc
-     ```
+    which increases the indentation level for a block of code.
 
-     which concatenates a collection of documents, separating them with new lines.
- 1. (Medium) Use the `runReader` function to write a function
+1.  (Medium) Use the `sequence` function defined in `Data.Traversable` to write a function
 
-     ```haskell
-     render :: Doc -> String
-     ```
+    ```haskell
+    cat :: Array Doc -> Doc
+    ```
 
-     which renders a document as a String.
+    which concatenates a collection of documents, separating them with new lines.
 
- You should now be able to use your library to write simple documents, as follows:
+1.  (Medium) Use the `runReader` function to write a function
 
- ```haskell
- render $ cat
-   [ line "Here is some indented text:"
-   , indent $ cat
-       [ line "I am indented"
-       , line "So am I"
-       , indent $ line "I am even more indented"
-       ]
-   ]
- ```
+    ```haskell
+    render :: Doc -> String
+    ```
+
+    which renders a document as a String.
+
+You should now be able to use your library to write simple documents, as follows:
+
+```haskell
+render $ cat
+  [ line "Here is some indented text:"
+  , indent $ cat
+      [ line "I am indented"
+      , line "So am I"
+      , indent $ line "I am even more indented"
+      ]
+  ]
+```
 
 ## The Writer Monad
 
@@ -339,20 +343,20 @@ We can test our modified function in PSCi:
 Tuple 3 ["gcdLog 21 15","gcdLog 6 15","gcdLog 6 9","gcdLog 6 3","gcdLog 3 3"]
 ```
 
- ## Exercises
+## Exercises
 
- 1. (Medium) Rewrite the `sumArray` function above using the `Writer` monad and the `Additive Int` monoid from the `monoid` package.
- 1. (Medium) The _Collatz_ function is defined on natural numbers `n` as `n / 2` when `n` is even, and `3 * n + 1` when `n` is odd. For example, the iterated Collatz sequence starting at `10` is as follows:
+1.  (Medium) Rewrite the `sumArray` function above using the `Writer` monad and the `Additive Int` monoid from the `monoid` package.
+1.  (Medium) The _Collatz_ function is defined on natural numbers `n` as `n / 2` when `n` is even, and `3 * n + 1` when `n` is odd. For example, the iterated Collatz sequence starting at `10` is as follows:
 
-     ```text
-     10, 5, 16, 8, 4, 2, 1, ...
-     ```
+    ```text
+    10, 5, 16, 8, 4, 2, 1, ...
+    ```
 
-     It is conjectured that the iterated Collatz sequence always reaches `1` after some finite number of applications of the Collatz function.
+    It is conjectured that the iterated Collatz sequence always reaches `1` after some finite number of applications of the Collatz function.
 
-     Write a function which uses recursion to calculate how many iterations of the Collatz function are required before the sequence reaches `1`.
+    Write a function which uses recursion to calculate how many iterations of the Collatz function are required before the sequence reaches `1`.
 
-     Modify your function to use the `Writer` monad to log each application of the Collatz function.
+    Modify your function to use the `Writer` monad to log each application of the Collatz function.
 
 ## Monad Transformers
 
@@ -545,28 +549,29 @@ One problem with this code is that we have to use the `lift` function multiple t
 
 Fortunately, as we will see, we can use the automatic code generation provided by type class inference to do most of this "heavy lifting" for us.
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Use the `ExceptT` monad transformer over the `Identity` functor to write a function `safeDivide` which divides two numbers, throwing an error (as the String "Divide by zero!") if the denominator is zero.
- 1. (Medium) Write a parser
+1.  (Easy) Use the `ExceptT` monad transformer over the `Identity` functor to write a function `safeDivide` which divides two numbers, throwing an error (as the String "Divide by zero!") if the denominator is zero.
+1.  (Medium) Write a parser
 
-     ```haskell
-     string :: String -> Parser String
-     ```
+    ```haskell
+    string :: String -> Parser String
+    ```
 
-     which matches a string as a prefix of the current state, or fails with an error message.
+    which matches a string as a prefix of the current state, or fails with an error message.
 
-     Your parser should work as follows:
+    Your parser should work as follows:
 
-     ```text
-     > runParser (string "abc") "abcdef"
-     (Right (Tuple (Tuple "abc" "def") ["The state is abcdef"]))
-     ```
+    ```text
+    > runParser (string "abc") "abcdef"
+    (Right (Tuple (Tuple "abc" "def") ["The state is abcdef"]))
+    ```
 
-     _Hint_: you can use the implementation of `split` as a starting point. You might find the `stripPrefix` function useful.
- 1. (Difficult) Use the `ReaderT` and `WriterT` monad transformers to reimplement the document printing library which we wrote earlier using the `Reader` monad.
+    _Hint_: you can use the implementation of `split` as a starting point. You might find the `stripPrefix` function useful.
 
-     Instead of using `line` to emit strings and `cat` to concatenate strings, use the `Array String` monoid with the `WriterT` monad transformer, and `tell` to append a line to the result. Use the same names as in the original implementation but ending with an apostrophe (`'`).
+1.  (Difficult) Use the `ReaderT` and `WriterT` monad transformers to reimplement the document printing library which we wrote earlier using the `Reader` monad.
+
+    Instead of using `line` to emit strings and `cat` to concatenate strings, use the `Array String` monoid with the `WriterT` monad transformer, and `tell` to append a line to the result. Use the same names as in the original implementation but ending with an apostrophe (`'`).
 
 ## Type Classes to the Rescue!
 
@@ -712,18 +717,18 @@ We can even use `many` to fully split a string into its lower and upper case com
 
 Again, this illustrates the power of reusability that monad transformers bring - we were able to write a backtracking parser in a declarative style with only a few lines of code, by reusing standard abstractions!
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Remove the calls to the `lift` function from your implementation of the `string` parser. Verify that the new implementation type checks, and convince yourself that it should.
- 1. (Medium) Use your `string` parser with the `some` combinator to write a parser `asFollowedByBs` which recognizes strings consisting of several copies of the string `"a"` followed by several copies of the string `"b"`.
- 1. (Medium) Use the `<|>` operator to write a parser `asOrBs` which recognizes strings of the letters `a` or `b` in any order.
- 1. (Difficult) The `Parser` monad might also be defined as follows:
+1.  (Easy) Remove the calls to the `lift` function from your implementation of the `string` parser. Verify that the new implementation type checks, and convince yourself that it should.
+1.  (Medium) Use your `string` parser with the `some` combinator to write a parser `asFollowedByBs` which recognizes strings consisting of several copies of the string `"a"` followed by several copies of the string `"b"`.
+1.  (Medium) Use the `<|>` operator to write a parser `asOrBs` which recognizes strings of the letters `a` or `b` in any order.
+1.  (Difficult) The `Parser` monad might also be defined as follows:
 
-     ```haskell
-     type Parser = ExceptT Errors (StateT String (WriterT Log Identity))
-     ```
+    ```haskell
+    type Parser = ExceptT Errors (StateT String (WriterT Log Identity))
+    ```
 
-     What effect does this change have on our parsing functions?
+    What effect does this change have on our parsing functions?
 
 ## The RWS Monad
 
@@ -911,12 +916,12 @@ The `runGame` function finally attaches the initial line handler to the console 
 {{#include ../exercises/chapter11/src/Main.purs:runGame_attach_handler}}
 ```
 
- ## Exercises
+## Exercises
 
- 1. (Medium) Implement a new command `cheat`, which moves all game items from the game grid into the user's inventory. Create a function `cheat :: Game Unit` in the `Game` module, and use this function from `game`.
- 1. (Difficult) The `Writer` component of the `RWS` monad is currently used for two types of messages: error messages and informational messages. Because of this, several parts of the code use case statements to handle error cases.
+1.  (Medium) Implement a new command `cheat`, which moves all game items from the game grid into the user's inventory. Create a function `cheat :: Game Unit` in the `Game` module, and use this function from `game`.
+1.  (Difficult) The `Writer` component of the `RWS` monad is currently used for two types of messages: error messages and informational messages. Because of this, several parts of the code use case statements to handle error cases.
 
-     Refactor the code to use the `ExceptT` monad transformer to handle the error messages, and `RWS` to handle informational messages. _Note:_ There are no tests for this exercise.
+    Refactor the code to use the `ExceptT` monad transformer to handle the error messages, and `RWS` to handle informational messages. _Note:_ There are no tests for this exercise.
 
 ## Handling Command Line Options
 
@@ -937,13 +942,14 @@ This is best illustrated by example. The application's `main` function is define
 The first argument is used to configure the `optparse` library. In our case, we simply configure it to show the help message when the application is run without any arguments (instead of showing a "missing argument" error) by using `OP.prefs OP.showHelpOnEmpty`, but the `Options.Applicative.Builder` module provides several other options.
 
 The second argument is the complete description of our parser program:
-```haskell 
+
+```haskell
 {{#include ../exercises/chapter11/src/Main.purs:argParser}}
 
 {{#include ../exercises/chapter11/src/Main.purs:parserOptions}}
 ```
 
-Here `OP.info` combines a `Parser` with a set of options for how the help message is formatted. `env <**> OP.helper` takes any command line argument `Parser` named `env` and adds a `--help` option to it automatically. Options for the help message are of type `InfoMod`, which is a monoid, so we can use the `fold` function to add several options together. 
+Here `OP.info` combines a `Parser` with a set of options for how the help message is formatted. `env <**> OP.helper` takes any command line argument `Parser` named `env` and adds a `--help` option to it automatically. Options for the help message are of type `InfoMod`, which is a monoid, so we can use the `fold` function to add several options together.
 
 The interesting part of our parser is constructing the `GameEnvironment`:
 
@@ -955,9 +961,9 @@ The interesting part of our parser is constructing the `GameEnvironment`:
 
 Notice how we were able to use the notation afforded by the applicative operators to give a compact, declarative specification of our command line interface. In addition, it is simple to add new command line arguments, simply by adding a new function argument to `runGame`, and then using `<*>` to lift `runGame` over an additional argument in the definition of `env`.
 
- ## Exercises
+## Exercises
 
- 1. (Medium) Add a new Boolean-valued property `cheatMode` to the `GameEnvironment` record. Add a new command line flag `-c` to the `optparse` configuration which enables cheat mode. The `cheat` command from the previous exercise should be disallowed if cheat mode is not enabled.
+1.  (Medium) Add a new Boolean-valued property `cheatMode` to the `GameEnvironment` record. Add a new command line flag `-c` to the `optparse` configuration which enables cheat mode. The `cheat` command from the previous exercise should be disallowed if cheat mode is not enabled.
 
 ## Conclusion
 
@@ -968,4 +974,3 @@ Because we separated our implementation from the user interface, it would be pos
 We have seen how monad transformers allow us to write safe code in an imperative style, where effects are tracked by the type system. In addition, type classes provide a powerful way to abstract over the actions provided by a monad, enabling code reuse. We were able to use standard abstractions like `Alternative` and `MonadPlus` to build useful monads by combining standard monad transformers.
 
 Monad transformers are an excellent demonstration of the sort of expressive code that can be written by relying on advanced type system features such as higher-kinded polymorphism and multi-parameter type classes.
-

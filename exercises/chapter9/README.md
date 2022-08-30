@@ -87,3 +87,5 @@ You should hopefully be able to draw on your knowledge of concepts from previous
 
 - `Aff`을 사용하면 비동기 계산을 병렬으로 사용할 수 있다.
 - `parallel` 패키지에 type class `Parallel`는 `Aff` 와 같은 모나드의 병렬 계산을 지원함.
+
+서술과 실행의 분리<- 밑줄쫙 별표두개
