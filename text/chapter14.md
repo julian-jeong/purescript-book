@@ -81,9 +81,9 @@ As it stands, there are several problems with this library:
 
 - Creating HTML documents is difficult - every new element requires at least one record and one data constructor.
 - It is possible to represent invalid documents:
-    - The developer might mistype the element name
-    - The developer can associate an attribute with the wrong type of element
-    - The developer can use a closed element when an open element is correct
+  - The developer might mistype the element name
+  - The developer can associate an attribute with the wrong type of element
+  - The developer can use a closed element when an open element is correct
 
 In the remainder of the chapter, we will apply certain techniques to solve these problems and turn our library into a usable domain-specific language for creating HTML documents.
 
@@ -246,16 +246,16 @@ unit
 
 Note, however, that no changes had to be made to the `render` function, because the underlying data representation never changed. This is one of the benefits of the smart constructors approach - it allows us to separate the internal data representation for a module from the representation which is perceived by users of its external API.
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Use the `Data.DOM.Smart` module to experiment by creating new HTML documents using `render`.
- 1. (Medium) Some HTML attributes such as `checked` and `disabled` do not require values, and may be rendered as _empty attributes_:
+1.  (Easy) Use the `Data.DOM.Smart` module to experiment by creating new HTML documents using `render`.
+1.  (Medium) Some HTML attributes such as `checked` and `disabled` do not require values, and may be rendered as _empty attributes_:
 
-     ```html
-     <input disabled>
-     ```
+    ```html
+    <input disabled />
+    ```
 
-     Modify the representation of an `Attribute` to take empty attributes into account. Write a function which can be used in place of `attribute` or `:=` to add an empty attribute to an element.
+    Modify the representation of an `Attribute` to take empty attributes into account. Write a function which can be used in place of `attribute` or `:=` to add an empty attribute to an element.
 
 ## Phantom Types
 
@@ -349,17 +349,17 @@ Now we find it is impossible to represent these invalid HTML documents, and we a
 unit
 ```
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Create a data type which represents either pixel or percentage lengths. Write an instance of `IsValue` for your type. Modify the `width` and `height` attributes to use your new type.
- 1. (Difficult) By defining type-level representatives for the Boolean values `true` and `false`, we can use a phantom type to encode whether an `AttributeKey` represents an _empty attribute_ such as `disabled` or `checked`.
+1.  (Easy) Create a data type which represents either pixel or percentage lengths. Write an instance of `IsValue` for your type. Modify the `width` and `height` attributes to use your new type.
+1.  (Difficult) By defining type-level representatives for the Boolean values `true` and `false`, we can use a phantom type to encode whether an `AttributeKey` represents an _empty attribute_ such as `disabled` or `checked`.
 
-     ```haskell
-     data True
-     data False
-     ```
+    ```haskell
+    data True
+    data False
+    ```
 
-     Modify your solution to the previous exercise to use a phantom type to prevent the user from using the `attribute` operator with an empty attribute.
+    Modify your solution to the previous exercise to use a phantom type to prevent the user from using the `attribute` operator with an empty attribute.
 
 ## The Free Monad
 
@@ -566,9 +566,9 @@ That's it! We can test our new monadic API in PSCi, as follows:
 unit
 ```
 
- ## Exercises
+## Exercises
 
- 1. (Medium) Add a new data constructor to the `ContentF` type to support a new action `comment`, which renders a comment in the generated HTML. Implement the new action using `liftF`. Update the interpretation `renderContentItem` to interpret your new constructor appropriately.
+1.  (Medium) Add a new data constructor to the `ContentF` type to support a new action `comment`, which renders a comment in the generated HTML. Implement the new action using `liftF`. Update the interpretation `renderContentItem` to interpret your new constructor appropriately.
 
 ## Extending the Language
 
@@ -701,23 +701,22 @@ unit
 
 You can verify that multiple calls to `newName` do in fact result in unique names.
 
- ## Exercises
+## Exercises
 
- 1. (Medium) We can simplify the API further by hiding the `Element` type from its users. Make these changes in the following steps:
-     
-     - Combine functions like `p` and `img` (with return type `Element`) with the `elem` action to create new actions with return type `Content Unit`.
-     - Change the `render` function to accept an argument of type `Content Unit` instead of `Element`.
- 1. (Medium) Hide the implementation of the `Content` monad by using a `newtype` instead of a type synonym. You should not export the data
-     constructor for your `newtype`.
- 1. (Difficult) Modify the `ContentF` type to support a new action
+1.  (Medium) We can simplify the API further by hiding the `Element` type from its users. Make these changes in the following steps:
+    - Combine functions like `p` and `img` (with return type `Element`) with the `elem` action to create new actions with return type `Content Unit`.
+    - Change the `render` function to accept an argument of type `Content Unit` instead of `Element`.
+1.  (Medium) Hide the implementation of the `Content` monad by using a `newtype` instead of a type synonym. You should not export the data
+    constructor for your `newtype`.
+1.  (Difficult) Modify the `ContentF` type to support a new action
 
-     ```haskell
-     isMobile :: Content Boolean
-     ```
+    ```haskell
+    isMobile :: Content Boolean
+    ```
 
-     which returns a boolean value indicating whether or not the document is being rendered for display on a mobile device.
+    which returns a boolean value indicating whether or not the document is being rendered for display on a mobile device.
 
-     _Hint_: use the `ask` action and the `ReaderT` monad transformer to interpret this action. Alternatively, you might prefer to use the `RWS` monad.
+    _Hint_: use the `ask` action and the `ReaderT` monad transformer to interpret this action. Alternatively, you might prefer to use the `RWS` monad.
 
 ## Conclusion
 

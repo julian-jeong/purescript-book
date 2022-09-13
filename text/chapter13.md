@@ -87,10 +87,10 @@ not equal to expected:
 
 Notice how the input `xs` and `ys` were generated as arrays of randomly-selected integers.
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Write a property which asserts that merging an array with the empty array does not modify the original array. _Note_: This new property is redundant, since this situation is already covered by our existing property. We're just trying to give you readers a simple way to practice using quickCheck.
- 1. (Easy) Add an appropriate error message to the remaining property for `merge`.
+1.  (Easy) Write a property which asserts that merging an array with the empty array does not modify the original array. _Note_: This new property is redundant, since this situation is already covered by our existing property. We're just trying to give you readers a simple way to practice using quickCheck.
+1.  (Easy) Add an appropriate error message to the remaining property for `merge`.
 
 ## Testing Polymorphic Code
 
@@ -134,10 +134,10 @@ quickCheck \xs ys ->
 
 Here, `xs` and `ys` both have type `Array Int`, since the `ints` function has been used to disambiguate the unknown type.
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Write a function `bools` which forces the types of `xs` and `ys` to be `Array Boolean`, and add additional properties which test `mergePoly` at that type.
- 1. (Medium) Choose a pure function from the core libraries (for example, from the `arrays` package), and write a QuickCheck property for it, including an appropriate error message. Your property should use a helper function to fix any polymorphic type arguments to either `Int` or `Boolean`.
+1.  (Easy) Write a function `bools` which forces the types of `xs` and `ys` to be `Array Boolean`, and add additional properties which test `mergePoly` at that type.
+1.  (Medium) Choose a pure function from the core libraries (for example, from the `arrays` package), and write a QuickCheck property for it, including an appropriate error message. Your property should use a helper function to fix any polymorphic type arguments to either `Int` or `Boolean`.
 
 ## Generating Arbitrary Data
 
@@ -241,10 +241,10 @@ quickCheck \t a ->
 
 Here, the argument `t` is a randomly-generated tree of type `Tree Int`, where the type argument disambiguated by the identity function `treeOfInt`.
 
- ## Exercises
+## Exercises
 
- 1. (Medium) Create a newtype for `String` with an associated `Arbitrary` instance which generates collections of randomly-selected characters in the range `a-z`. _Hint_: use the `elements` and `arrayOf` functions from the `Test.QuickCheck.Gen` module.
- 1. (Difficult) Write a property which asserts that a value inserted into a tree is still a member of that tree after arbitrarily many more insertions.
+1.  (Medium) Create a newtype for `String` with an associated `Arbitrary` instance which generates collections of randomly-selected characters in the range `a-z`. _Hint_: use the `elements` and `arrayOf` functions from the `Test.QuickCheck.Gen` module.
+1.  (Difficult) Write a property which asserts that a value inserted into a tree is still a member of that tree after arbitrarily many more insertions.
 
 ## Testing Higher-Order Functions
 
@@ -384,19 +384,20 @@ Success : Success : ...
 
 `quickCheckPure` might be useful in other situations, such as generating random input data for performance benchmarks, or generating sample form data for web applications.
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Write `Coarbitrary` instances for the `Byte` and `Sorted` type constructors.
- 1. (Medium) Write a (higher-order) property which asserts associativity of the `mergeWith f` function for any function `f`. Test your property in PSCi using `quickCheckPure`.
- 1. (Medium) Write `Arbitrary` and `Coarbitrary` instances for the following data type:
+1.  (Easy) Write `Coarbitrary` instances for the `Byte` and `Sorted` type constructors.
+1.  (Medium) Write a (higher-order) property which asserts associativity of the `mergeWith f` function for any function `f`. Test your property in PSCi using `quickCheckPure`.
+1.  (Medium) Write `Arbitrary` and `Coarbitrary` instances for the following data type:
 
-     ```haskell
-     data OneTwoThree a = One a | Two a a | Three a a a
-     ```
+    ```haskell
+    data OneTwoThree a = One a | Two a a | Three a a a
+    ```
 
-     _Hint_: Use the `oneOf` function defined in `Test.QuickCheck.Gen` to define your `Arbitrary` instance.
- 1. (Medium) Use `all` to simplify the result of the `quickCheckPure` function - your new function should have type `List Result -> Boolean` and should return `true` if every test passes and `false` otherwise.
- 1. (Medium) As another approach to simplifying the result of `quickCheckPure`, try writing a function `squashResults :: List Result -> Result`. Consider using the `First` monoid from `Data.Maybe.First` with the `foldMap` function to preserve the first error in case of failure.
+    _Hint_: Use the `oneOf` function defined in `Test.QuickCheck.Gen` to define your `Arbitrary` instance.
+
+1.  (Medium) Use `all` to simplify the result of the `quickCheckPure` function - your new function should have type `List Result -> Boolean` and should return `true` if every test passes and `false` otherwise.
+1.  (Medium) As another approach to simplifying the result of `quickCheckPure`, try writing a function `squashResults :: List Result -> Result`. Consider using the `First` monoid from `Data.Maybe.First` with the `foldMap` function to preserve the first error in case of failure.
 
 ## Conclusion
 
